@@ -28,6 +28,8 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.CustomeV
     @Override
     public void onBindViewHolder(@NonNull ContactAdapter.CustomeViewHolder holder, int position) {
 
+        
+
     }
 
     @Override

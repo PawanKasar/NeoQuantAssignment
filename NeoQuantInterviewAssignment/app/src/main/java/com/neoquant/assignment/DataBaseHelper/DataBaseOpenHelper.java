@@ -42,10 +42,10 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
             + ")";
 
     public DataBaseOpenHelper(Context context) {
-        super(context, Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //
         // this.context = context;
-        SQLiteDatabase.openOrCreateDatabase(Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null);
+        //SQLiteDatabase.openOrCreateDatabase(Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null);
     }
 
     @Override
@@ -126,5 +126,33 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
         }
 
         return rowObject;
+    }
+
+
+    public int getContactMasterCount() {
+        String countQuery = "SELECT  * FROM " + ContactMasterTable;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+
+    public boolean columnExists(String contactNumber) {
+        String rawQuery = "Select * from " + ContactMasterTable + " where " + KEY_Contact_Number + " = " + contactNumber;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(rawQuery, null);
+        cursor.moveToFirst();
+
+        // cursor.getInt(0) is 1 if column with value exists
+        if (cursor.getInt(0) == 1) {
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
     }
 }
