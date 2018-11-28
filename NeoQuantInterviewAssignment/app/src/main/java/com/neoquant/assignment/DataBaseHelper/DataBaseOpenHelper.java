@@ -60,11 +60,7 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
     /**
      * Insert data Into Store Master Table
      */
-    public long insertIntoContactMasterTable(String transactionNo, String strDatetime, String storeIdBarcode,
-                                                     String cardId, String dateStr, String deno_2000, String deno_500, String deno_200, String deno_100, String deno_50,
-                                                     String deno_20, String deno_10, String deno_5, String denomisccount, String denomiscvalue,
-                                                     String total_amount, String supervisor_name, String filePathSign,
-                                                     String serialESNNo){
+    public long insertIntoContactMasterTable(String contactPersonName, String contactNumber){
 
         long insertedRecord=0;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -72,12 +68,10 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_HHT_TransactionNumber, transactionNo);
-            values.put(KEY_Store_Id, storeIdBarcode);
-            values.put(KEY_Card_Mast_Id, cardId);
-            values.put(KEY_Collection_Date, dateStr);
+            values.put(KEY_Contact_Person_Name, contactPersonName);
+            values.put(KEY_Contact_Number, contactNumber);
             // Inserting Row
-            insertedRecord =  db.insert(CollectionTransactionTable, null, values);
+            insertedRecord =  db.insert(ContactMasterTable, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
             //Log.e("result","something went wrong");

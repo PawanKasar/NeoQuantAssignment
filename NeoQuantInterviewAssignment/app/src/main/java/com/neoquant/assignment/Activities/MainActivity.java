@@ -1,7 +1,7 @@
 package com.neoquant.assignment.Activities;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
 import com.neoquant.assignment.R;
 

@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">NeoQuantInterviewAssignment</string>
+    <string name="app_name">NeoQuant</string>
+
+    //Component String
+    <string name="textview_name">Contact Person Name</string>
+    <string name="textview_number">Contact Number</string>
+
+    //Edittext String
+    <string name="edittext_name">Enter Person Name</string>
+    <string name="edittext_number">Enter Number</string>
+
+    //Button String
+    <string name="button_text">Add Contact</string>
+    <string name="button_cancel">Cancel</string>
 </resources>
