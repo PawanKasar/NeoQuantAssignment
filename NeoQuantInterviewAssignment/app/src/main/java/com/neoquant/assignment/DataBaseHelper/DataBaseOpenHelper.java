@@ -2,9 +2,14 @@ package com.neoquant.assignment.DataBaseHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -83,5 +88,43 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
         db.close(); // Closing database connection
 
         return insertedRecord;
+    }
+
+    public JSONObject getDataFromStoreMaster(String contactNumber) {
+
+        SQLiteDatabase sqliteDatabase = this.getWritableDatabase();
+        JSONArray resultSet = new JSONArray();
+        JSONObject rowObject = null;
+        sqliteDatabase.beginTransaction();
+        try {
+            Cursor cursor = sqliteDatabase.rawQuery("select * from "+ContactMasterTable+" WHERE "+ KEY_Contact_Number +" = '" + contactNumber + "'", null);
+
+            cursor.moveToFirst();
+            while (cursor.isAfterLast() == false) {
+                int totalColumn = cursor.getColumnCount();
+                rowObject = new JSONObject();
+                for (int i = 0; i < totalColumn; i++) {
+                    if (cursor.getColumnName(i) != null) {
+                        try {
+                            rowObject.put(cursor.getColumnName(i),
+                                    cursor.getString(i));
+                        } catch (Exception e) {
+                            Log.d("TAG", e.getMessage());
+                        }
+                    }
+                }
+                resultSet.put(rowObject);
+                cursor.moveToNext();
+            }
+
+            cursor.close();
+            sqliteDatabase.setTransactionSuccessful();
+        } catch (Exception e) {
+            rowObject = null;
+        } finally {
+            sqliteDatabase.endTransaction();
+        }
+
+        return rowObject;
     }
 }

@@ -6,12 +6,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.neoquant.assignment.DataBaseHelper.DataBaseOpenHelper;
 import com.neoquant.assignment.R;
 
 public class AddContactsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText edt_contact_person_name, edt_contact_number;
     private Button btn_add_contact, btn_cancel;
+    private DataBaseOpenHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
 
         btn_add_contact.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
+
+        db = new DataBaseOpenHelper(getApplicationContext());
     }
 
     @Override
@@ -39,6 +43,13 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
 
         switch (id){
             case R.id.btn_add_contact:
+                if (edt_contact_person_name.getText().toString().trim().isEmpty()
+                        && edt_contact_number.getText().toString().trim().isEmpty() ){
+                    edt_contact_person_name.setError("Please Enter Valid Value");
+                    edt_contact_number.setError("Please Enter Valid Value");
+                }else{
+                    addContact();
+                }
                 break;
 
             case R.id.btn_cancel:
@@ -47,6 +58,8 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addContact(){
-        
+        if ()
+        db.insertIntoContactMasterTable(edt_contact_person_name.getText().toString().trim(),
+                edt_contact_number.getText().toString().trim());
     }
 }
