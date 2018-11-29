@@ -5,13 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
 
 public class DataBaseOpenHelper extends SQLiteOpenHelper{
 
@@ -46,6 +43,10 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
         //
         // this.context = context;
         //SQLiteDatabase.openOrCreateDatabase(Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null);
+        /*super(context, Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null, DATABASE_VERSION);
+        //
+        // this.context = context;
+        SQLiteDatabase.openOrCreateDatabase(Environment.getExternalStorageDirectory() + File.separator + DATABASE_NAME, null);*/
     }
 
     @Override
@@ -90,14 +91,15 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
         return insertedRecord;
     }
 
-    public JSONObject getDataFromStoreMaster(String contactNumber) {
+    //Get Data From Contact Master Table
+    public JSONArray getDataFromContactMaster() {
 
         SQLiteDatabase sqliteDatabase = this.getWritableDatabase();
         JSONArray resultSet = new JSONArray();
         JSONObject rowObject = null;
         sqliteDatabase.beginTransaction();
         try {
-            Cursor cursor = sqliteDatabase.rawQuery("select * from "+ContactMasterTable+" WHERE "+ KEY_Contact_Number +" = '" + contactNumber + "'", null);
+            Cursor cursor = sqliteDatabase.rawQuery("select * from "+ContactMasterTable+"",null);
 
             cursor.moveToFirst();
             while (cursor.isAfterLast() == false) {
@@ -125,13 +127,14 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
             sqliteDatabase.endTransaction();
         }
 
-        return rowObject;
+        return resultSet;
     }
 
 
     public int getContactMasterCount() {
         String countQuery = "SELECT  * FROM " + ContactMasterTable;
         SQLiteDatabase db = this.getReadableDatabase();
+        Log.d("Query", countQuery);
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
@@ -141,7 +144,7 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper{
 
     public boolean columnExists(String contactNumber) {
         String rawQuery = "Select * from " + ContactMasterTable + " where " + KEY_Contact_Number + " = " + contactNumber;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(rawQuery, null);
         cursor.moveToFirst();

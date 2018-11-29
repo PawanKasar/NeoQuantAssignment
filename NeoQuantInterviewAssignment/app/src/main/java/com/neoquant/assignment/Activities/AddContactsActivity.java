@@ -1,7 +1,9 @@
 package com.neoquant.assignment.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,12 +61,26 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void addContact() {
-        if (db.columnExists(edt_contact_number.getText().toString().trim())) {
+        /*if (db.columnExists(edt_contact_number.getText().toString().trim())) {
             Toast.makeText(AddContactsActivity.this, "Data is Already Present In DataBase", Toast.LENGTH_SHORT).show();
         } else {
             db.insertIntoContactMasterTable(edt_contact_person_name.getText().toString().trim(),
                     edt_contact_number.getText().toString().trim());
             Toast.makeText(AddContactsActivity.this, "Data Inserted Successfuly", Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
+        int statusLogin = db.getContactMasterCount();
+        Log.d("statusLogin",statusLogin+"");
+
+        db.insertIntoContactMasterTable(edt_contact_person_name.getText().toString().trim(),
+                edt_contact_number.getText().toString().trim());
+        Toast.makeText(AddContactsActivity.this, "Data Inserted Successfuly", Toast.LENGTH_SHORT).show();
+        openActivity();
+
+    }
+
+    public void openActivity(){
+        startActivity(new Intent(AddContactsActivity.this,MainActivity.class));
+        finish();
     }
 }
