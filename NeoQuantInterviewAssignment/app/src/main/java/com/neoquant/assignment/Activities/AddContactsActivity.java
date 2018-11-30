@@ -72,7 +72,7 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
         int statusLogin = db.getContactMasterCount();
         Log.d("statusLogin",statusLogin+"");
 
-        db.insertIntoContactMasterTable(edt_contact_person_name.getText().toString().trim(),
+        db.insertIntoContactMasterTable(edt_contact_person_name.getText().toString(),
                 edt_contact_number.getText().toString().trim());
         Toast.makeText(AddContactsActivity.this, "Data Inserted Successfuly", Toast.LENGTH_SHORT).show();
         openActivity();
@@ -81,6 +81,7 @@ public class AddContactsActivity extends AppCompatActivity implements View.OnCli
 
     public void openActivity(){
         startActivity(new Intent(AddContactsActivity.this,MainActivity.class));
+        overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
         finish();
     }
 }
